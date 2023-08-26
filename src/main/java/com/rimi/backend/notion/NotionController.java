@@ -74,8 +74,10 @@ public class NotionController {
             for (QandA qandA : qandAList) {
                 user += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nanswer: " + qandA.getAnswer()
                         + "\n";
-                assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nadvice to the user: "
-                        + qandA.getAdvice() + "\n";
+                if (qandA.getAdvice() != null)
+                    assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion()
+                            + "\nadvice to the user: "
+                            + qandA.getAdvice() + "\n";
             }
 
             String gptResponse = createAssistantService.createAssistantBlock(promptBase, user, assistant);

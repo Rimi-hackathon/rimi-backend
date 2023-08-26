@@ -60,6 +60,39 @@ public class NotionService {
             "                             \"href\": null\n" + //
             "                         }";
 
+    private String calloutTemplate = "{\n" + //
+            "                                    \"object\": \"block\",\n" + //
+            "                                    \"type\": \"callout\",\n" + //
+            "                                    \"callout\": {\n" + //
+            "                                        \"rich_text\": [\n" + //
+            "                                            {\n" + //
+            "                                                \"type\": \"text\",\n" + //
+            "                                                \"text\": {\n" + //
+            "                                                    \"content\": \"%s\",\n" + //
+            "                                                    \"link\": {\n" + //
+            "                                                        \"url\": \"%s\"\n" + //
+            "                                                    }\n" + //
+            "                                                },\n" + //
+            "                                                \"annotations\": {\n" + //
+            "                                                    \"bold\": false,\n" + //
+            "                                                    \"italic\": false,\n" + //
+            "                                                    \"strikethrough\": false,\n" + //
+            "                                                    \"underline\": false,\n" + //
+            "                                                    \"code\": false,\n" + //
+            "                                                    \"color\": \"default\"\n" + //
+            "                                                },\n" + //
+            "                                                \"plain_text\": \"%s\",\n" + //
+            "                                                \"href\": \"%s\"\n" + //
+            "                                            }\n" + //
+            "                                        ],\n" + //
+            "                                        \"icon\": {\n" + //
+            "                                            \"type\": \"emoji\",\n" + //
+            "                                            \"emoji\": \"%s\n" + //
+            "                                        },\n" + //
+            "                                        \"color\": \"gray_background\"\n" + //
+            "                                    }\n" + //
+            "                                }";
+
     private String buildRichText(String content) {
         return String.format(richTextTemplate, content, content);
     }
@@ -70,6 +103,10 @@ public class NotionService {
 
     private String buildBulletListItem(String content) {
         return String.format(bulletListItemTemplate, String.format(richTextTemplate, content, content));
+    }
+
+    private String buildCallout(String type, String link, String emoji) {
+        return String.format(calloutTemplate, type, link, type, link, emoji);
     }
 
     public String buildPayload(CreateNotionRequest req, String gptResponse) throws Exception {
@@ -161,31 +198,32 @@ public class NotionService {
         {
             JsonArray columnList = templateSections.get(3).getAsJsonObject().get("column_list").getAsJsonObject()
                     .get("children").getAsJsonArray();
-            JsonArray socialColumns = columnList.get(0).getAsJsonObject().get("column").getAsJsonObject()
-                    .get("children").getAsJsonArray();
+            JsonObject socialColumns = columnList.get(0).getAsJsonObject().get("column").getAsJsonObject();
 
             // socials
             {
+                JsonArray socialArray = new JsonArray();
                 // 1. email
-                JsonObject emailColumn = socialColumns.get(2).getAsJsonObject().get("callout").getAsJsonObject()
-                        .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-                emailColumn.get("text").getAsJsonObject().get("link").getAsJsonObject().addProperty("url",
-                        emailUrl);
-                emailColumn.addProperty("plain_text", emailUrl);
+                if (emailUrl != null && emailUrl.length() > 0) {
+                    JsonObject emailCallout = JsonParser.parseString(buildCallout("Eamil", emailUrl, "✉️"))
+                            .getAsJsonObject();
+                    socialArray.add(emailCallout);
+                }
 
                 // 2. my site
-                JsonObject mySiteColumn = socialColumns.get(3).getAsJsonObject().get("callout").getAsJsonObject()
-                        .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-                mySiteColumn.get("text").getAsJsonObject().get("link").getAsJsonObject().addProperty("url",
-                        mySiteUrl);
-                mySiteColumn.addProperty("plain_text", mySiteUrl);
+                if (mySiteUrl != null && mySiteUrl.length() > 0) {
+                    JsonObject mySiteCallout = JsonParser.parseString(buildCallout("My Site", mySiteUrl, "🌐"))
+                            .getAsJsonObject();
+                    socialArray.add(mySiteCallout);
+                }
 
-                // 3. Instagram
-                JsonObject instaColumn = socialColumns.get(4).getAsJsonObject().get("callout").getAsJsonObject()
-                        .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-                instaColumn.get("text").getAsJsonObject().get("link").getAsJsonObject().addProperty("url",
-                        instaUrl);
-                instaColumn.addProperty("plain_text", instaUrl);
+                // 3. SNS
+                if (instaUrl != null && instaUrl.length() > 0) {
+                    JsonObject snsCallout = JsonParser.parseString(buildCallout("SNS", instaUrl, "📷"))
+                            .getAsJsonObject();
+                    socialArray.add(snsCallout);
+                }
+                socialColumns.add("children", socialArray);
             }
 
             // skills
@@ -221,7 +259,7 @@ public class NotionService {
             // since this is the last section, it can be appended to the templateSections
             // array
             try {
-                String prizes = qandARepository.findByEmailAndStepAndPercent(req.getGoogleIdToken(), 4, 100).get()
+                String prizes = qandARepository.findByEmailAndStepAndPercent(req.getEmail(), 5, 100).get()
                         .getAnswer();
 
                 for (String prize : prizes.split("\n")) {
