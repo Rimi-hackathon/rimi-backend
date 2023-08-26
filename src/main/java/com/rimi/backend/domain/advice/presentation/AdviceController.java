@@ -34,16 +34,15 @@ public class AdviceController {
      * 입력: String question, String answer
      * 출력: String advice
      */
-    @PostMapping(value="advice",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping(value = "advice", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> createAdvice(@Valid @RequestBody AdviceRequest adviceRequest) {
         try {
-            return  adviceUserCase.createAdvice(adviceRequest);
-        }catch (JsonProcessingException je){
+            return adviceUserCase.createAdvice(adviceRequest);
+        } catch (JsonProcessingException je) {
             log.error(je.getMessage());
             return Flux.empty();
         }
     }
-
-
 
 }
