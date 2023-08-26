@@ -1,7 +1,9 @@
 package com.rimi.backend.global.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 public class CreateNotionRequest {
     @Getter
     private String snsUrl;

@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import com.google.gson.JsonObject;
 import com.rimi.backend.BackendApplication;
+import com.rimi.backend.global.request.CreateNotionRequest;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BackendApplication.class)
 @AutoConfigureMockMvc
@@ -20,7 +21,8 @@ public class NotionServiceTest {
     @Test
     void testBuildPayload() {
         String result = assertDoesNotThrow(() -> {
-            return notionService.buildPayload();
+            CreateNotionRequest req = new CreateNotionRequest("", "", "", "");
+            return notionService.buildPayload(req, "");
         }, "There should be no errors building the payload.");
         Assert.notNull(result, result);
         Assert.isTrue(result.length() > 0, "The payload should not be empty.");

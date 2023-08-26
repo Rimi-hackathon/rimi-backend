@@ -65,7 +65,7 @@ public class NotionService {
         return String.format(bulletListItemTemplate, String.format(richTextTemplate, content, content));
     }
 
-    public String buildPayload(CreateNotionRequest req) throws FileNotFoundException {
+    public String buildPayload(CreateNotionRequest req, String gptResponse) throws FileNotFoundException {
         if (template == null) {
             parseTemplate();
         }

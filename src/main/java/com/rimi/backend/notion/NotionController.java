@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.rimi.backend.domain.advice.domain.entity.QandA;
+import com.rimi.backend.domain.advice.domain.repository.QandARepository;
 import com.rimi.backend.global.gpt.service.CreateAssistantService;
 import com.rimi.backend.global.gpt.service.GetSystemService;
 import com.rimi.backend.global.request.CreateNotionRequest;
 import com.rimi.backend.global.response.CreateNotionResponse;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +40,9 @@ public class NotionController {
     @Autowired()
     private CreateAssistantService createAssistantService;
 
+    @Autowired
+    private QandARepository qandARepository;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${notion.apiKey}")
@@ -47,15 +54,29 @@ public class NotionController {
     // TODO: we need to decide whether to hold the payload on the server or the
     // client.
     @PostMapping("/createNotionPage")
-    public ResponseEntity<CreateNotionResponse> createNotionPage(@RequestBody CreateNotionRequest req ) {
+    public ResponseEntity<CreateNotionResponse> createNotionPage(@RequestBody CreateNotionRequest req) {
         try {
             String promptBase = systemService.getSystemContent("getNotionInput");
 
-            // TODO: get payload and create result
-            // createAssistantService.createAssistantWithAssistantResponse(promptBase, user,
-            // assistant)
+            List<QandA> qandAList = qandARepository.findAll();
+            String user = "";
+            String assistant = "";
 
-            String json = notionService.buildPayload(req);
+            for (QandA qandA : qandAList) {
+                user += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nanswer: " + qandA.getAnswer()
+                        + "\n";
+                assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nadvice to the user: "
+                        + qandA.getAdvice() + "\n";
+            }
+            
+            String gptResponse = "";
+            List<String> gptStreamResp = createAssistantService.createAssistantWithAssistantResponse(promptBase, user,
+                    assistant).collectList().block();
+            for (String resp : gptStreamResp) {
+                gptResponse += resp;
+            }
+
+            String json = notionService.buildPayload(req, gptResponse);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
