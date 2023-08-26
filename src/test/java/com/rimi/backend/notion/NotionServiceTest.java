@@ -11,9 +11,7 @@ import org.springframework.util.Assert;
 import com.google.gson.JsonObject;
 import com.rimi.backend.BackendApplication;
 
-@SpringBootTest(
-  webEnvironment = SpringBootTest.WebEnvironment.MOCK,
-  classes = BackendApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = BackendApplication.class)
 @AutoConfigureMockMvc
 public class NotionServiceTest {
     @Autowired
@@ -21,12 +19,16 @@ public class NotionServiceTest {
 
     @Test
     void testBuildPayload() {
-
+        String result = assertDoesNotThrow(() -> {
+            return notionService.buildPayload();
+        }, "There should be no errors building the payload.");
+        Assert.notNull(result, result);
+        Assert.isTrue(result.length() > 0, "The payload should not be empty.");
     }
 
     @Test
     void testParseTemplate() {
-        JsonObject parsedTemplate = assertDoesNotThrow(() -> { 
+        JsonObject parsedTemplate = assertDoesNotThrow(() -> {
             return notionService.parseTemplate();
         }, "There should be no errors parsing the template.");
         Assert.notNull(parsedTemplate, "The parsed template should not be null.");
