@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 
 import static com.rimi.backend.domain.advice.presentation.constant.AdviceResponseMessage.CREATE_ADVICE_SUCCESS;
 
+@CrossOrigin
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
