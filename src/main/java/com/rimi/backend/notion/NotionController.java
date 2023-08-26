@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.rimi.backend.domain.advice.domain.entity.QandA;
+import com.rimi.backend.domain.advice.domain.repository.NotionRepository;
 import com.rimi.backend.domain.advice.domain.repository.QandARepository;
 import com.rimi.backend.global.gpt.service.CreateAssistantService;
 import com.rimi.backend.global.gpt.service.GetSystemService;
@@ -45,6 +46,9 @@ public class NotionController {
 
     @Autowired
     private QandARepository qandARepository;
+
+    @Autowired
+    private NotionRepository notionRepository;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -109,6 +113,13 @@ public class NotionController {
 
     @GetMapping("/getNotionPage")
     public ResponseEntity<GetNotionResponse> getNotionPage(@RequestBody GetNotionRequest req) {
-        return ResponseEntity.ok(notionLink);
+        try {
+            String notionUrl = notionRepository.findByGoogleIdToken(req.getEmail()).getUrl();
+            return ResponseEntity.ok(GetNotionResponse.create(notionUrl));
+        } catch (Exception e) {
+            System.out.println("Notion page get failure.");
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(GetNotionResponse.create(null));
+        }
     }
 }

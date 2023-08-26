@@ -1,8 +1,10 @@
 package com.rimi.backend.global.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
 public class GetNotionRequest {
-    public String googleIdToken;
+    @Getter
+    public String email;
 }
