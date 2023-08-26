@@ -33,6 +33,10 @@ dependencies {
 
 	implementation 'org.json:json:20210307'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+	//webclient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {

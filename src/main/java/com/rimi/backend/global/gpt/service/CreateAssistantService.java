@@ -1,46 +1,55 @@
 package com.rimi.backend.global.gpt.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
 public class CreateAssistantService {
 
-    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
-
     @Value("${gpt.apiKey}")
     private String OPENAI_API_KEY;
 
-    public String createAssistant(String system, String user) {
-        JSONObject payload = buildPayload(system, user, null);
+    @Value("${gpt.apiUrl}")
+    private String OPENAI_API_URL;
 
-        StringEntity inputEntity = new StringEntity(payload.toString(), ContentType.APPLICATION_JSON);
-        HttpPost post = buildPostRequest(inputEntity);
+    private WebClient webClient;
+    private final ObjectMapper objectMapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+            .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
 
-        return sendRequestAndParseResponse(post);
+    @PostConstruct
+    public void init() {
+        webClient = WebClient.builder()
+                .baseUrl(OPENAI_API_URL)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader("Authorization", "Bearer " + OPENAI_API_KEY)
+                .build();
     }
 
-    public String createAssistantWithAssistantResponse(String system, String user, String assistant) {
+    public Flux<String> createAssistant(String system, String user) throws JsonProcessingException  {
+        JSONObject payload = buildPayload(system, user, null);
+        return sendRequestAndParseResponse(payload);
+    }
+
+    public Flux<String> createAssistantWithAssistantResponse(String system, String user, String assistant) {
         JSONObject payload = buildPayload(system, user, assistant);
-
-        StringEntity inputEntity = new StringEntity(payload.toString(), ContentType.APPLICATION_JSON);
-        HttpPost post = buildPostRequest(inputEntity);
-
-        return sendRequestAndParseResponse(post);
+        return sendRequestAndParseResponse(payload);
     }
 
     private JSONObject buildPayload(String system, String user, String assistant) {
@@ -49,13 +58,13 @@ public class CreateAssistantService {
 
         messageList.put(buildMessage("system", system));
         messageList.put(buildMessage("user", user));
-        if (assistant != null && !assistant.isEmpty()) {
-            messageList.put(buildMessage("assistant", assistant));
-        }
+//        if (assistant != null && !assistant.isEmpty()) {
+//            messageList.put(buildMessage("assistant", assistant));
+//        }
 
-        payload.put("model", "gpt-3.5-turbo");
+        payload.put("model", "gpt-3.5-turbo-16k-0613");
         payload.put("messages", messageList);
-        payload.put("temperature", 0.7);
+        payload.put("stream", true);
 
         return payload;
     }
@@ -75,34 +84,12 @@ public class CreateAssistantService {
         return post;
     }
 
-    private String sendRequestAndParseResponse(HttpPost post) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse response = httpClient.execute(post)) {
-
-            HttpEntity resEntity = response.getEntity();
-            String resJsonString = new String(resEntity.getContent().readAllBytes(), StandardCharsets.UTF_8);
-            JSONObject resJson = new JSONObject(resJsonString);
-
-            if (resJson.has("error")) {
-                return "Error: " + resJson.getString("error");
-            }
-
-            JSONArray responseArray = resJson.getJSONArray("choices");
-            if (responseArray.length() > 0) {
-                JSONObject firstChoice = responseArray.getJSONObject(0);
-                JSONObject messageObj = firstChoice.getJSONObject("message");
-                if ("assistant".equals(messageObj.getString("role"))) {
-                    String result = messageObj.getString("content");
-                    // colon 이후의 메시지만 추출
-                    String[] parts = result.split(":", 2);
-                    return parts.length > 1 ? parts[1].trim() : result;
-                }
-            }
-
-            return "No assistant response found.";
-
-        } catch (IOException e) {
-            return "Error: " + e.getMessage();
-        }
+    private Flux<String> sendRequestAndParseResponse(JSONObject payload) {
+        return webClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(payload.toString())
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .retrieve()
+                .bodyToFlux(String.class);
     }
 }
