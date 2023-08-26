@@ -25,7 +25,7 @@ public class QandA {
     private String question;
     @Column(nullable = false, length = 300)
     private String answer;
-    @Column(nullable = false, length = 500)
+    @Column(length = 500)
     private String advice;
 
     public static QandA createQandA(NextStepRequest nextStepRequest) {
