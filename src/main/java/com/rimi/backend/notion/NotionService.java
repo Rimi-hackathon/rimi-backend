@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -25,7 +23,6 @@ public class NotionService {
         return "";
     }
 
-    @PostConstruct
     public JsonObject parseTemplate() throws FileNotFoundException {
         Gson gson = new Gson();
         String filePath =  new File("").getAbsolutePath();
