@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonParser;
+import com.rimi.backend.domain.advice.domain.entity.NotionResult;
 import com.rimi.backend.domain.advice.domain.entity.QandA;
 import com.rimi.backend.domain.advice.domain.repository.NotionRepository;
 import com.rimi.backend.domain.advice.domain.repository.QandARepository;
@@ -94,12 +96,16 @@ public class NotionController {
                     requestEntity,
                     String.class);
             System.out.println("notionResponseEntity = " + notionResponseEntity);
-            notionResponseEntity.getBody();
+            String body = notionResponseEntity.getBody();
 
             // HTTP 응답 결과를 확인합니다.
             if (notionResponseEntity.getStatusCode() == HttpStatus.OK) {
                 System.out.println("Notion page creation success!");
-                return ResponseEntity.ok(CreateNotionResponse.create(notionResponseEntity.getBody()));
+                String publicUrl = JsonParser.parseString(body).getAsJsonObject().get("public_url").getAsString();
+                notionRepository.save(NotionResult.createNotionResult(
+                        publicUrl,
+                        req.getEmail()));
+                return ResponseEntity.ok(CreateNotionResponse.create(publicUrl));
             } else {
                 System.out.println("Notion page creation failure on API request.");
                 return ResponseEntity.internalServerError().body(CreateNotionResponse.create());

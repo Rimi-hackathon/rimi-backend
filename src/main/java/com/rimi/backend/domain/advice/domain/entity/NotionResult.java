@@ -7,9 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
-@AllArgsConstructor
+@Builder
 @Entity
 public class NotionResult {
     @Id
@@ -18,7 +19,14 @@ public class NotionResult {
     private Long id;
 
     @Getter
-    public String googleIdToken;
+    public String email;
     @Getter
     public String url;
+
+    public static NotionResult createNotionResult(String email, String url) {
+        return NotionResult.builder()
+                .email(email)
+                .url(url)
+                .build();
+    }
 }
