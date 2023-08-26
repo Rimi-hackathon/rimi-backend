@@ -19,7 +19,7 @@ public class QandA {
     @Column(name = "q_a_id")
     private Long QandAid;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
     private Integer step; //1, 2, 3
     private Integer percent; //50%, 75%
