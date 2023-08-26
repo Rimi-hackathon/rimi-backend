@@ -221,7 +221,7 @@ public class NotionService {
             // since this is the last section, it can be appended to the templateSections
             // array
             try {
-                String prizes = qandARepository.findByGoogleIdTokenAndStepAndPercent(req.getGoogleIdToken(), 4, 100)
+                String prizes = qandARepository.findByEmailAndStepAndPercent(req.getGoogleIdToken(), 4, 100).get()
                         .getAnswer();
 
                 for (String prize : prizes.split("\n")) {

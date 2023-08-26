@@ -27,8 +27,8 @@ public class NextStepRequest {
     @Size(min = 1, max = 500, message = "advice 은 최소 1개, 최대 500개의 문자만 입력 가능합니다.")
     private String advice;
 
-    @NotBlank(message = "googleIdToken 을 입력해주세요.")
-    private String googleIdToken;
+    @NotBlank(message = "email 을 입력해주세요.")
+    private String email;
 
     @NotNull(message = "step 을 입력해주세요.(1,2,3,4)")
     private Integer step;

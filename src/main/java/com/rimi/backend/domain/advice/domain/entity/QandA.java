@@ -18,7 +18,9 @@ public class QandA {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "q_a_id")
     private Long QandAid;
-    private String googleIdToken;
+
+    @Column(nullable = false, unique = true)
+    private String email;
     private Integer step; //1, 2, 3
     private Integer percent; //50%, 75%
     @Column(nullable = false, length = 300)
@@ -30,12 +32,18 @@ public class QandA {
 
     public static QandA createQandA(NextStepRequest nextStepRequest) {
         return QandA.builder()
-                .googleIdToken(nextStepRequest.getGoogleIdToken())
+                .email(nextStepRequest.getEmail())
                 .question(nextStepRequest.getQuestion())
                 .advice(nextStepRequest.getAdvice())
                 .answer(nextStepRequest.getAnswer())
                 .step(nextStepRequest.getStep())
                 .percent(nextStepRequest.getPercent())
                 .build();
+    }
+
+    public void updateQandA(String question, String answer, String advice){
+        this.question=question;
+        this.answer=answer;
+        this.advice=advice;
     }
 }
