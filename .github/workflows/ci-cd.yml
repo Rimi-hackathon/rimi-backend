@@ -68,14 +68,6 @@ jobs:
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
 
-  # AWS에서 root 디렉토리의 keystore.p12 파일 가져오기
-    - name: Fetch keystore.p12 from AWS
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_SERVER_HOST }}
-        username: ec2-user
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: scp ec2-user@${{ secrets.EC2_SERVER_HOST }}:/keystore.p12 ./keystore.p12
       
     # Docker 이미지 빌드 및 푸시
     - name: Docker build
@@ -101,6 +93,8 @@ jobs:
       
             # 이미지를 가져옴
             docker pull ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
+
+            docker cp  ./keystore.p12 ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}:./
       
             # 컨테이너를 실행
             docker run -d --name rimi -p 443:8080 ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
