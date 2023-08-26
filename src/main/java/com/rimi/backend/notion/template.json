@@ -697,22 +697,6 @@
                 "is_toggleable": false,
                 "color": "default"
             }
-        },
-        {
-            "object": "block",
-            "type": "bulleted_list_item",
-            "bulleted_list_item": {
-                "rich_text": [],
-                "color": "default"
-            }
-        },
-        {
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "rich_text": [],
-                "color": "default"
-            }
         }
     ],
     "icon": {

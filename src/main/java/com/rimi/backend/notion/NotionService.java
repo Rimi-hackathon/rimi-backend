@@ -16,7 +16,54 @@ import com.google.gson.stream.JsonReader;
 public class NotionService {
     private JsonObject template;
 
-    // TODO: modify template to fill in appropriate fields.
+    // requires richTextTemplate to be input
+    private String bulletListItemTemplate = "{\n" + //
+            "                                    \"object\": \"block\",\n" + //
+            "                                    \"type\": \"bulleted_list_item\",\n" + //
+            "                                    \"bulleted_list_item\": {\n" + //
+            "                                        \"rich_text\": [%s],\n" + //
+            "                                        \"color\": \"default\"\n" + //
+            "                                    }\n" + //
+            "                                }";
+
+    // requires richTextTemplate to be input
+    private String paragraphTemplate = "{\n" + //
+            "            \"object\": \"block\",\n" + //
+            "            \"type\": \"paragraph\",\n" + //
+            "            \"paragraph\": {\n" + //
+            "                \"rich_text\": [%s],\n" + //
+            "                \"color\": \"default\"\n" + //
+            "            }\n" + //
+            "        }";
+    private String richTextTemplate = "{\n" + //
+            "                             \"type\": \"text\",\n" + //
+            "                             \"text\": {\n" + //
+            "                                 \"content\": \"%s\"\n" + //
+            "                             },\n" + //
+            "                             \"annotations\": {\n" + //
+            "                                 \"bold\": false,\n" + //
+            "                                 \"italic\": false,\n" + //
+            "                                 \"strikethrough\": false,\n" + //
+            "                                 \"underline\": false,\n" + //
+            "                                 \"code\": false,\n" + //
+            "                                 \"color\": \"default\"\n" + //
+            "                             },\n" + //
+            "                             \"plain_text\": \"%s\",\n" + //
+            "                             \"href\": null\n" + //
+            "                         }";
+
+    private String buildRichText(String content) {
+        return String.format(richTextTemplate, content, content);
+    }
+
+    private String buildParagraph(String content) {
+        return String.format(paragraphTemplate, String.format(richTextTemplate, content, content));
+    }
+
+    private String buildBulletListItem(String content) {
+        return String.format(bulletListItemTemplate, String.format(richTextTemplate, content, content));
+    }
+
     public String buildPayload() throws FileNotFoundException {
         if (template == null) {
             parseTemplate();
@@ -38,6 +85,8 @@ public class NotionService {
 
         String values = "values";
         String experiences = "experiences";
+
+        String[] prizes = { "prize1", "prize2", "prize3" };
 
         JsonObject copyTemplate = template.deepCopy();
 
@@ -146,23 +195,32 @@ public class NotionService {
 
         // 5. insert values
         {
-            JsonObject valueHeading = templateSections.get(5).getAsJsonObject().get("heading_2").getAsJsonObject()
-                    .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-            valueHeading.get("text").getAsJsonObject().addProperty("content", values);
-            valueHeading.addProperty("plain_text", values);
+            JsonObject valueParagraph = templateSections.get(7).getAsJsonObject().get("paragraph").getAsJsonObject();
+
+            String richValueText = buildRichText(values);
+            valueParagraph.add("rich_text", JsonParser.parseString("[" + richValueText + "]").getAsJsonArray());
         }
 
         // 6. insert experience
         {
-            JsonObject experienceHeading = templateSections.get(10).getAsJsonObject().get("heading_2").getAsJsonObject()
-                    .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-            experienceHeading.get("text").getAsJsonObject().addProperty("content", experiences);
-            experienceHeading.addProperty("plain_text", experiences);
+            // callout in 12th section - skip for now
+            JsonObject experienceParagraph = templateSections.get(13).getAsJsonObject().get("paragraph")
+                    .getAsJsonObject();
+
+            String richExperienceText = buildRichText(experiences);
+            experienceParagraph.add("rich_text",
+                    JsonParser.parseString("[" + richExperienceText + "]").getAsJsonArray());
         }
 
         // 7. insert prizes & certificates
         {
-            // templateSections.get(14).
+            // since this is the last section, it can be appended to the templateSections
+            // array
+
+            for (String prize : prizes) {
+                templateSections.add(
+                        JsonParser.parseString(buildBulletListItem(prize)).getAsJsonObject());
+            }
         }
         return copyTemplate.toString();
     }
@@ -186,7 +244,7 @@ public class NotionService {
                 "                                            {\n" + //
                 "                                                \"type\": \"text\",\n" + //
                 "                                                \"text\": {\n" + //
-                "                                                    \"content\": \"\u1F9E9Skills\"\n" + //
+                "                                                    \"content\": \"🧩Skills\"\n" + //
                 "                                                },\n" + //
                 "                                                \"annotations\": {\n" + //
                 "                                                    \"bold\": false,\n" + //
@@ -196,7 +254,7 @@ public class NotionService {
                 "                                                    \"code\": false,\n" + //
                 "                                                    \"color\": \"default\"\n" + //
                 "                                                },\n" + //
-                "                                                \"plain_text\": \"\u1F9E9Skills\",\n" + //
+                "                                                \"plain_text\": \"🧩Skills\",\n" + //
                 "                                                \"href\": null\n" + //
                 "                                            }\n" + //
                 "                                        ],\n" + //
@@ -210,13 +268,11 @@ public class NotionService {
                 "                                    \"divider\": {}\n" + //
                 "                                }").getAsJsonObject();
 
-        String bulletListItemTemplate = "{\"object\": \"block\",\"type\": \"bulleted_list_item\",\"bulleted_list_item\": {\"rich_text\": [{\"type\": \"text\",\"text\": {\"content\": \"%s\"},\"annotations\": {\"bold\": false,\"italic\": false,\"strikethrough\": false,\"underline\": false,\"code\": false,\"color\": \"default\"},\"plain_text\": \"%s\",\"href\": null}],\"color\": \"default\"}}";
-
         JsonArray skillList = new JsonArray();
         skillList.add(skillHeading);
         skillList.add(skillDivider);
         for (String skill : skills) {
-            skillList.add(JsonParser.parseString(String.format(bulletListItemTemplate, skill, skill)));
+            skillList.add(JsonParser.parseString(buildBulletListItem(skill)));
         }
         return skillList;
     }
