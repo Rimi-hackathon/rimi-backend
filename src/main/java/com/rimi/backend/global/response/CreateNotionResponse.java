@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class CreateNotionResponse {
-    private Boolean isSuccess;
     private String notionUrl;
 
     public static CreateNotionResponse create(String url) {
-        return new CreateNotionResponse(true, url);
+        return new CreateNotionResponse(url);
     }
 
     public static CreateNotionResponse create() {
-        return new CreateNotionResponse(false, null);
+        return new CreateNotionResponse(null);
     }
 }
