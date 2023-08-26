@@ -1,0 +1,97 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./
+      APPLICATION: ${{ secrets.APPLICATION }}
+
+    steps:
+    # 소스 코드 체크아웃
+    - uses: actions/checkout@v2
+
+    # JDK 11 설정
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    # Gradle 패키지 캐시
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: |
+             ~/.gradle/caches
+             ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+              ${{ runner.os }}-gradle-
+
+    # 설정 파일 생성
+    - uses: actions/checkout@v2
+    - run: |
+          mkdir ./src/main/resources
+          cd ./src/main/resources
+          touch ./application.yml 
+          echo "${{env.APPLICATION}}" > ./application.yml
+
+    # 설정 파일을 작업공간에 저장
+    - uses: actions/upload-artifact@v2
+      with:
+        name: application.yml
+        path: ./src/main/resources/application.yml
+
+
+    # gradlew 권한 설정
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      working-directory: ${{ env.working-directory }}
+
+    # Gradle로 빌드
+    - name: Build with Gradle
+      run: ./gradlew build
+      working-directory: ${{ env.working-directory }}
+
+    # Gradle 캐시 정리
+    - name: Cleanup Gradle Cache
+      if: ${{ always() }}
+      run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
+
+    # Docker 이미지 빌드 및 푸시
+    - name: Docker build
+      run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7} .
+          docker push ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
+
+    # Deploy
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.EC2_SERVER_HOST }}
+          username: ec2-user
+          key: ${{ secrets.PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            # 이미 hackathon 컨테이너가 실행 중이면 중지하고 제거
+            if docker ps -a | grep 'rimi'; then
+              docker stop rimi
+              docker rm rimi
+            fi
+      
+            # 이미지를 가져옴
+            docker pull ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
+      
+            # 컨테이너를 실행
+            docker run -d --name rimi -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
