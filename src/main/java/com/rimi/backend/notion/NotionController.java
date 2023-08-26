@@ -120,7 +120,7 @@ public class NotionController {
     @GetMapping("/getNotionPage")
     public ResponseEntity<GetNotionResponse> getNotionPage(@RequestBody GetNotionRequest req) {
         try {
-            String notionUrl = notionRepository.findByGoogleIdToken(req.getEmail()).getUrl();
+            String notionUrl = notionRepository.findByEmail(req.getEmail()).getUrl();
             return ResponseEntity.ok(GetNotionResponse.create(notionUrl));
         } catch (Exception e) {
             System.out.println("Notion page get failure.");
