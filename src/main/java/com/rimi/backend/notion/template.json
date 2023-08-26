@@ -1,0 +1,721 @@
+{
+  "parent": {
+    "page_id": "171434e769554b549e8bcb79ae945044"
+  },
+  "properties": {
+    "title": {
+      "title": [
+        {
+          "text": {
+            "content": "OOO"
+          }
+        }
+      ]
+    }
+  },
+  "children": [
+    {
+      "object": "block",
+      "type": "heading_1",
+      "heading_1": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "안녕하세요. OOO입니다."
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "안녕하세요. OOO입니다.",
+            "href": "None"
+          }
+        ],
+        "is_toggleable": false,
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "column_list",
+      "column_list": {
+        "children": [
+          {
+            "object": "block",
+            "type": "column",
+            "column": {
+              "children": [
+                {
+                  "object": "block",
+                  "type": "image",
+                  "image": {
+                    "type": "external",
+                    "external": {
+                      "url": "https://img.freepik.com/free-icon/user_318-644324.jpg"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "object": "block",
+            "type": "column",
+            "column": {
+              "children": [
+                {
+                  "object": "block",
+                  "type": "heading_2",
+                  "heading_2": {
+                    "rich_text": [
+                      {
+                        "type": "text",
+                        "text": {
+                          "content": "필요한걸 못 찾으면 만들어서 쓰는 능동적인 사람이에요. "
+                        },
+                        "annotations": {
+                          "bold": false,
+                          "italic": false,
+                          "strikethrough": false,
+                          "underline": false,
+                          "code": false,
+                          "color": "default"
+                        },
+                        "plain_text": "필요한걸 못 찾으면 만들어서 쓰는 능동적인 사람이에요. ",
+                        "href": "None"
+                      }
+                    ],
+                    "is_toggleable": false,
+                    "color": "default"
+                  }
+                },
+                {
+                  "object": "block",
+                  "type": "heading_2",
+                  "heading_2": {
+                    "rich_text": [
+                      {
+                        "type": "text",
+                        "text": {
+                          "content": "다양한 분야를 이해하고 이를 통해 새로운 가치를 만들어내고 있어요." 
+                        },
+                        "annotations": {
+                          "bold": false,
+                          "italic": false,
+                          "strikethrough": false,
+                          "underline": false,
+                          "code": false,
+                          "color": "default"
+                        },
+                        "plain_text": "다양한 분야를 이해하고 이를 통해 새로운 가치를 만들어내고 있어요.",
+                        "href": "None"
+                      }
+                    ],
+                    "is_toggleable": false,
+                    "color": "default"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "object": "block",
+      "type": "paragraph",
+      "paragraph": {
+        "rich_text": [],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "paragraph",
+      "paragraph": {
+        "rich_text": [],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Email",
+              "link": {
+                "url": "mailto:mizan05j@gmail.com"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Email",
+            "href": "mailto:mizan05j@gmail.com"
+          }
+        ],
+        "icon": {
+          "type": "emoji",
+          "emoji": "✉️"
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "My Site",
+              "link": {
+                "url": "http://arai.kr/"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "My Site",
+            "href": "http://arai.kr/"
+          }
+        ],
+        "icon": {
+          "type": "emoji",
+          "emoji": "🌐"
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Instagram",
+              "link": {
+                "url": "https://www.instagram.com/flowerdance15/"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Instagram",
+            "href": "https://www.instagram.com/flowerdance15/"
+          }
+        ],
+        "icon": {
+          "type": "external",
+          "external": {
+            "url": "https://cdn-icons-png.flaticon.com/256/2111/2111463.png"
+          }
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Brunch",
+              "link": {
+                "url": "https://brunch.co.kr/@arai"
+              }
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Brunch",
+            "href": "https://brunch.co.kr/@arai"
+          },
+          {
+            "type": "text",
+            "text": {
+              "content": " "
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " ",
+            "href": "None"
+          }
+        ],
+        "icon": {
+          "type": "external",
+          "external": {
+            "url": "https://is4-ssl.mzstatic.com/image/thumb/Purple126/v4/dc/58/23/dc582390-d539-3a38-417c-c4eb6a666a96/AppIconRelease-0-1x_U007emarketing-0-7-0-85-220.png/256x256bb.jpg"
+          }
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "heading_2",
+      "heading_2": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "보유 기술"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "보유 기술",
+            "href": "None"
+          }
+        ],
+        "is_toggleable": false,
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "숙련됨 or 현재도 사용중 "
+            },
+            "annotations": {
+              "bold": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "숙련됨 or 현재도 사용중 ",
+            "href": "None"
+          }
+        ],
+        "icon": {
+          "type": "emoji",
+          "emoji": "📄"
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "photoshop"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "photoshop",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "figma"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "figma",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "unity"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "unity",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "confluence"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "confluence",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "PPT"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "PPT",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Stable Diffusion, Midjourney"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Stable Diffusion, Midjourney",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "Chat GPT"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "Chat GPT",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "paragraph",
+      "paragraph": {
+        "rich_text": [],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "callout",
+      "callout": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": " 숙련도 하~중 or 지식만 남음"
+            },
+            "annotations": {
+              "bold": true,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": " 숙련도 하~중 or 지식만 남음",
+            "href": "None"
+          }
+        ],
+        "icon": {
+          "type": "emoji",
+          "emoji": "📜"
+        },
+        "color": "gray_background"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "python"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "python",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "unity, c#"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "unity, c#",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "aftereffect"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "aftereffect",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "zbrush, substance painter, 3ds max"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "zbrush, substance painter, 3ds max",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "notion"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "notion",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    },
+    {
+      "object": "block",
+      "type": "bulleted_list_item",
+      "bulleted_list_item": {
+        "rich_text": [
+          {
+            "type": "text",
+            "text": {
+              "content": "obsidian"
+            },
+            "annotations": {
+              "bold": false,
+              "italic": false,
+              "strikethrough": false,
+              "underline": false,
+              "code": false,
+              "color": "default"
+            },
+            "plain_text": "obsidian",
+            "href": "None"
+          }
+        ],
+        "color": "default"
+      }
+    }
+  ],
+  "icon": {
+    "type": "emoji",
+    "emoji": "🎉"
+  },
+  "cover": {
+    "type": "external",
+    "external": {
+      "url": "https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1065&q=80"
+    }
+  }
+}
