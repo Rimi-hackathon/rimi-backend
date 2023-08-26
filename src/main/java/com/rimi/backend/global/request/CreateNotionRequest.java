@@ -13,4 +13,6 @@ public class CreateNotionRequest {
     private String email;
     @Getter
     private String name;
+    @Getter
+    private String googleIdToken;
 }

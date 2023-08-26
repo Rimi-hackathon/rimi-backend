@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QandARepository extends JpaRepository<QandA, Long> {
     // query all by googleIdToken
     public List<QandA> findAllByGoogleIdToken(String googleIdToken);
+
+    public QandA findByGoogleIdTokenAndStepAndPercent(String googleIdToken, Integer step, Integer percent);
 }

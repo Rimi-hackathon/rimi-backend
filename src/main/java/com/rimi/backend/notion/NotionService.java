@@ -3,7 +3,9 @@ package com.rimi.backend.notion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -11,10 +13,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.rimi.backend.domain.advice.domain.entity.QandA;
+import com.rimi.backend.domain.advice.domain.repository.QandARepository;
 import com.rimi.backend.global.request.CreateNotionRequest;
 
 @Service
 public class NotionService {
+    @Autowired
+    private QandARepository qandARepository;
+
     private JsonObject template;
 
     // requires richTextTemplate to be input
@@ -65,14 +72,19 @@ public class NotionService {
         return String.format(bulletListItemTemplate, String.format(richTextTemplate, content, content));
     }
 
-    public String buildPayload(CreateNotionRequest req, String gptResponse) throws FileNotFoundException {
+    public String buildPayload(CreateNotionRequest req, String gptResponse) throws Exception {
         if (template == null) {
             parseTemplate();
         }
+        String[] gptResponseArray = gptResponse.split("\\$");
+        if (gptResponseArray.length < 5) {
+            throw new IllegalArgumentException("GPT response must have at least 5 sections." + gptResponseArray.length);
+        }
+
         String name = req.getName();
         String introductoryText1 = "안녕하세요.";
-        String introductoryText2 = String.format("%s입니다.", name);
-        String selfDescriptionText1 = "t1";
+        String introductoryText2 = String.format("%s\n%s입니다.", gptResponseArray[0], name);
+        String selfDescriptionText1 = gptResponseArray[1];
         String selfDescriptionText2 = "t2";
         String selfDescriptionText3 = "t3";
 
@@ -80,13 +92,12 @@ public class NotionService {
         String mySiteUrl = req.getPersonalSiteUrl();
         String instaUrl = req.getSnsUrl();
 
-        String[] skills = { "Java", "Spring", "Python", "Django", "JavaScript", "React", "Vue", "MySQL", "MongoDB",
-                "AWS" };
+        String[] skills = gptResponseArray[3].split(",");
+        // { "Java", "Spring", "Python", "Django", "JavaScript", "React", "Vue",
+        // "MySQL", "MongoDB", "AWS" };
 
-        String values = "values";
-        String experiences = "experiences";
-
-        String[] prizes = { "prize1", "prize2", "prize3" };
+        String values = gptResponseArray[2];
+        String experiences = gptResponseArray[4];
 
         JsonObject copyTemplate = template.deepCopy();
 
@@ -209,10 +220,16 @@ public class NotionService {
         {
             // since this is the last section, it can be appended to the templateSections
             // array
+            try {
+                String prizes = qandARepository.findByGoogleIdTokenAndStepAndPercent(req.getGoogleIdToken(), 4, 100)
+                        .getAnswer();
 
-            for (String prize : prizes) {
-                templateSections.add(
-                        JsonParser.parseString(buildBulletListItem(prize)).getAsJsonObject());
+                for (String prize : prizes.split("\n")) {
+                    templateSections.add(
+                            JsonParser.parseString(buildBulletListItem(prize)).getAsJsonObject());
+                }
+            } catch (Exception e) {
+                System.out.println("prizes not found");
             }
         }
         return copyTemplate.toString();
