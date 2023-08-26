@@ -2,10 +2,14 @@ package com.rimi.backend.notion;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.rimi.backend.global.gpt.service.CreateAssistantService;
+import com.rimi.backend.global.gpt.service.GetSystemService;
+import com.rimi.backend.global.request.CreateNotionRequest;
 import com.rimi.backend.global.response.CreateNotionResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,12 @@ public class NotionController {
     @Autowired()
     private NotionService notionService;
 
+    @Autowired()
+    private GetSystemService systemService;
+
+    @Autowired()
+    private CreateAssistantService createAssistantService;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${notion.apiKey}")
@@ -37,9 +47,15 @@ public class NotionController {
     // TODO: we need to decide whether to hold the payload on the server or the
     // client.
     @PostMapping("/createNotionPage")
-    public ResponseEntity<CreateNotionResponse> createNotionPage() {
+    public ResponseEntity<CreateNotionResponse> createNotionPage(@RequestBody CreateNotionRequest req ) {
         try {
-            String json = notionService.buildPayload();
+            String promptBase = systemService.getSystemContent("getNotionInput");
+
+            // TODO: get payload and create result
+            // createAssistantService.createAssistantWithAssistantResponse(promptBase, user,
+            // assistant)
+
+            String json = notionService.buildPayload(req);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);

@@ -34,7 +34,6 @@ public class AdviceController {
      * 입력: String question, String answer
      * 출력: String advice
      */
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "advice", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> createAdvice(@Valid @RequestBody AdviceRequest adviceRequest) {
         try {

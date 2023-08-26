@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.transaction.Transactional;
-
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AdviceUserCase {
 
@@ -24,7 +21,6 @@ public class AdviceUserCase {
         String system = getSystemService.getSystemContent("getAdvice");
         String user = "question: " + adviceRequest.getQuestion() + "\nanswer: " + adviceRequest.getAnswer();
 
-        return createAssistantService.createAssistant(system,user);
+        return createAssistantService.createAssistant(system, user);
     }
 }
-

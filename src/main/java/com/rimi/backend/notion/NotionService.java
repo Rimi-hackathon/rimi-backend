@@ -11,6 +11,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import com.rimi.backend.global.request.CreateNotionRequest;
 
 @Service
 public class NotionService {
@@ -64,21 +65,20 @@ public class NotionService {
         return String.format(bulletListItemTemplate, String.format(richTextTemplate, content, content));
     }
 
-    public String buildPayload() throws FileNotFoundException {
+    public String buildPayload(CreateNotionRequest req) throws FileNotFoundException {
         if (template == null) {
             parseTemplate();
         }
-        String name = "test";
+        String name = req.getName();
         String introductoryText1 = "안녕하세요.";
         String introductoryText2 = String.format("%s입니다.", name);
         String selfDescriptionText1 = "t1";
         String selfDescriptionText2 = "t2";
         String selfDescriptionText3 = "t3";
 
-        String emailUrl = "mailto:";
-        String mySiteUrl = "http://arai.kr/";
-        String instaUrl = "https://www.instagram.com/";
-        String blogUrl = "https://blog.naver.com/";
+        String emailUrl = req.getEmail();
+        String mySiteUrl = req.getPersonalSiteUrl();
+        String instaUrl = req.getSnsUrl();
 
         String[] skills = { "Java", "Spring", "Python", "Django", "JavaScript", "React", "Vue", "MySQL", "MongoDB",
                 "AWS" };
@@ -175,13 +175,6 @@ public class NotionService {
                 instaColumn.get("text").getAsJsonObject().get("link").getAsJsonObject().addProperty("url",
                         instaUrl);
                 instaColumn.addProperty("plain_text", instaUrl);
-
-                // 4. Blog
-                JsonObject blogColumn = socialColumns.get(5).getAsJsonObject().get("callout").getAsJsonObject()
-                        .get("rich_text").getAsJsonArray().get(0).getAsJsonObject();
-                blogColumn.get("text").getAsJsonObject().get("link").getAsJsonObject().addProperty("url",
-                        blogUrl);
-                blogColumn.addProperty("plain_text", blogUrl);
             }
 
             // skills

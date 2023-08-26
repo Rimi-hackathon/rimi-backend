@@ -289,7 +289,7 @@
                                             {
                                                 "type": "text",
                                                 "text": {
-                                                    "content": "Instagram",
+                                                    "content": "SNS",
                                                     "link": {
                                                         "url": "https://www.instagram.com/flowerdance15/"
                                                     }
@@ -302,7 +302,7 @@
                                                     "code": false,
                                                     "color": "default"
                                                 },
-                                                "plain_text": "Instagram",
+                                                "plain_text": "SNS",
                                                 "href": "https://www.instagram.com/flowerdance15/"
                                             }
                                         ],
@@ -311,54 +311,6 @@
                                             "external": {
                                                 "url": "https://www.notion.so/icons/magic-wand_red.svg"
                                             }
-                                        },
-                                        "color": "gray_background"
-                                    }
-                                },
-                                {
-                                    "object": "block",
-                                    "type": "callout",
-                                    "callout": {
-                                        "rich_text": [
-                                            {
-                                                "type": "text",
-                                                "text": {
-                                                    "content": "Blog",
-                                                    "link": {
-                                                        "url": "https://brunch.co.kr/@arai"
-                                                    }
-                                                },
-                                                "annotations": {
-                                                    "bold": false,
-                                                    "italic": false,
-                                                    "strikethrough": false,
-                                                    "underline": false,
-                                                    "code": false,
-                                                    "color": "default"
-                                                },
-                                                "plain_text": "Blog",
-                                                "href": "https://brunch.co.kr/@arai"
-                                            },
-                                            {
-                                                "type": "text",
-                                                "text": {
-                                                    "content": " "
-                                                },
-                                                "annotations": {
-                                                    "bold": false,
-                                                    "italic": false,
-                                                    "strikethrough": false,
-                                                    "underline": false,
-                                                    "code": false,
-                                                    "color": "default"
-                                                },
-                                                "plain_text": " ",
-                                                "href": null
-                                            }
-                                        ],
-                                        "icon": {
-                                            "type": "emoji",
-                                            "emoji": "📖"
                                         },
                                         "color": "gray_background"
                                     }
