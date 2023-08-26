@@ -33,9 +33,9 @@ public class GetSystemService {
                         "a personal branding consultant",
                         "answer appropriately",
                         "Based on your understanding of the situation so far, please fill out following questions.\n" +
-                                "질문1: 답변을 하고 있는 사람을 긍정적으로 표현해줘. 답변1: \n" +
-                                "질문2: 답변을 하고 있는 사람을 긍정적으로 상세하게 표현해줘. 답변2: \n" +
-                                "질문3: 답변을 하고 있는 사람이 중요하게 생각하는 가치를 적어줘. 답변3: \n" +
+                                "질문1: 답변을 하고 있는 사람을 본인의 입장에서 긍정적으로 표현해줘. 답변1: \n" +
+                                "질문2: 답변을 하고 있는 사람을 본인의 입장에서 긍정적으로 상세하게 표현해줘. 답변2: \n" +
+                                "질문3: 답변을 하고 있는 사람이 중요하게 생각하는 가치를 본인의 입장에서 적어줘. 답변3: \n" +
                                 "질문4: 답변을 하고 있는 사람이 가진 강점 및 스킬을 단답으로 여러개 쉼표로 구분해서 적어줘. 답변4: \n" +
                                 "질문5: 답변을 하고 있는 사람이 가진 경험을 단답으로 여러개 적어줘. 답변5: \n" +
                                 "You must only provide 5 sections of text answers coressponding to each question. Separate the answers for each question with the $ symbol."

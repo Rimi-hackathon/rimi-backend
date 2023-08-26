@@ -1,6 +1,7 @@
 package com.rimi.backend.notion;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,9 @@ import com.rimi.backend.domain.advice.domain.repository.QandARepository;
 import com.rimi.backend.global.gpt.service.CreateAssistantService;
 import com.rimi.backend.global.gpt.service.GetSystemService;
 import com.rimi.backend.global.request.CreateNotionRequest;
+import com.rimi.backend.global.request.GetNotionRequest;
 import com.rimi.backend.global.response.CreateNotionResponse;
+import com.rimi.backend.global.response.GetNotionResponse;
 
 import java.util.List;
 
@@ -68,8 +71,8 @@ public class NotionController {
                 assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nadvice to the user: "
                         + qandA.getAdvice() + "\n";
             }
-            
-            String gptResponse= createAssistantService.createAssistantBlock(promptBase, user, assistant);
+
+            String gptResponse = createAssistantService.createAssistantBlock(promptBase, user, assistant);
 
             String json = notionService.buildPayload(req, gptResponse);
 
@@ -102,5 +105,10 @@ public class NotionController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(CreateNotionResponse.create());
         }
+    }
+
+    @GetMapping("/getNotionPage")
+    public ResponseEntity<GetNotionResponse> getNotionPage(@RequestBody GetNotionRequest req) {
+        return ResponseEntity.ok(notionLink);
     }
 }
