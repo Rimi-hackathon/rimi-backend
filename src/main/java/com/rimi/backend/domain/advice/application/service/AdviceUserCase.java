@@ -19,7 +19,7 @@ public class AdviceUserCase {
 
     public Flux<String> createAdvice(AdviceRequest adviceRequest) throws JsonProcessingException {
         String system = getSystemService.getSystemContent("getAdvice");
-        String user = "question: " + adviceRequest.getQuestion() + "\nanswer: " + adviceRequest.getAnswer();
+        String user = "chatgpt: " + adviceRequest.getQuestion() + "\nOOO: " + adviceRequest.getAnswer();
 
         return createAssistantService.createAssistant(system, user);
     }
