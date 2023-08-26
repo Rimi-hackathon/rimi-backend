@@ -94,4 +94,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
       
             # 컨테이너를 실행
-            docker run -d --name rimi -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
+            docker run -d --name rimi -p 443:8080 ${{ secrets.DOCKER_USERNAME }}/rimi:${GITHUB_SHA::7}
