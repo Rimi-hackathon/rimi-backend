@@ -69,12 +69,7 @@ public class NotionController {
                         + qandA.getAdvice() + "\n";
             }
             
-            String gptResponse = "";
-            List<String> gptStreamResp = createAssistantService.createAssistantWithAssistantResponse(promptBase, user,
-                    assistant).collectList().block();
-            for (String resp : gptStreamResp) {
-                gptResponse += resp;
-            }
+            String gptResponse= createAssistantService.createAssistantBlock(promptBase, user, assistant);
 
             String json = notionService.buildPayload(req, gptResponse);
 

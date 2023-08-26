@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.rimi.backend.global.gpt.dto.ChatGptResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.HttpPost;
@@ -58,9 +59,9 @@ public class CreateAssistantService {
 
         messageList.put(buildMessage("system", system));
         messageList.put(buildMessage("user", user));
-//        if (assistant != null && !assistant.isEmpty()) {
-//            messageList.put(buildMessage("assistant", assistant));
-//        }
+        if (assistant != null && !assistant.isEmpty()) {
+            messageList.put(buildMessage("assistant", assistant));
+        }
 
         payload.put("model", "gpt-3.5-turbo-16k-0613");
         payload.put("messages", messageList);
@@ -92,4 +93,23 @@ public class CreateAssistantService {
                 .retrieve()
                 .bodyToFlux(String.class);
     }
+
+    public String createAssistantBlock(String system, String user, String assistant) {
+        JSONObject payload = buildPayload(system, user, assistant);
+
+        ChatGptResponse response = sendRequestAndBlockResponse(payload);
+
+        return response.getChoices().get(0).getMessage().getContent();
+    }
+
+    private ChatGptResponse sendRequestAndBlockResponse(JSONObject payload) {
+        return webClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(payload.toString())
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(ChatGptResponse.class)
+                .block();
+    }
+
 }
