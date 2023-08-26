@@ -43,7 +43,7 @@ public class CreateAssistantService {
                 .build();
     }
 
-    public Flux<String> createAssistant(String system, String user) throws JsonProcessingException  {
+    public Flux<String> createAssistant(String system, String user) throws JsonProcessingException {
         JSONObject payload = buildPayload(system, user, null);
         return sendRequestAndParseResponse(payload);
     }
@@ -59,10 +59,10 @@ public class CreateAssistantService {
 
         messageList.put(buildMessage("system", system));
         messageList.put(buildMessage("user", user));
-        if (assistant != null && !assistant.isEmpty()) {
-            messageList.put(buildMessage("assistant", assistant));
-        }
-
+        // if (assistant != null && !assistant.isEmpty()) {
+        messageList.put(buildMessage("assistant", "답변"));
+        // }
+        payload.put("temperature", 0);
         payload.put("model", "gpt-3.5-turbo-16k-0613");
         payload.put("messages", messageList);
         payload.put("stream", true);

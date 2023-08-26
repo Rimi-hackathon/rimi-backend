@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.rimi.backend.domain.advice.domain.entity.NotionResult;
 import com.rimi.backend.domain.advice.domain.entity.QandA;
@@ -40,11 +42,6 @@ public class NotionController {
     @Autowired()
     private NotionService notionService;
 
-    @Autowired()
-    private GetSystemService systemService;
-
-    @Autowired()
-    private CreateAssistantService createAssistantService;
 
     @Autowired
     private QandARepository qandARepository;
@@ -60,29 +57,13 @@ public class NotionController {
     @Value("${notion.apiUrl}")
     private String API_URL;
 
+
     // TODO: we need to decide whether to hold the payload on the server or the
     // client.
     @PostMapping("/createNotionPage")
     public ResponseEntity<CreateNotionResponse> createNotionPage(@RequestBody CreateNotionRequest req) {
         try {
-            String promptBase = systemService.getSystemContent("getNotionInput");
-
-            List<QandA> qandAList = qandARepository.findAll();
-            String user = "";
-            String assistant = "";
-
-            for (QandA qandA : qandAList) {
-                user += "question " + qandA.getQandAid() + ": " + qandA.getQuestion() + "\nanswer: " + qandA.getAnswer()
-                        + "\n";
-                if (qandA.getAdvice() != null)
-                    assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion()
-                            + "\nadvice to the user: "
-                            + qandA.getAdvice() + "\n";
-            }
-
-            String gptResponse = createAssistantService.createAssistantBlock(promptBase, user, assistant);
-
-            String json = notionService.buildPayload(req, gptResponse);
+            String json = notionService.buildPayload(req);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -112,7 +93,9 @@ public class NotionController {
                 System.out.println("Notion page creation failure on API request.");
                 return ResponseEntity.internalServerError().body(CreateNotionResponse.create());
             }
-        } catch (Exception e) {
+        } catch (
+
+        Exception e) {
             System.out.println("Notion page creation failure.");
             e.printStackTrace();
             return ResponseEntity.internalServerError().body(CreateNotionResponse.create());

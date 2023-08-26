@@ -22,7 +22,7 @@ public class NotionServiceTest {
     void testBuildPayload() {
         String result = assertDoesNotThrow(() -> {
             CreateNotionRequest req = CreateNotionRequest.create("", "", "", "");
-            return notionService.buildPayload(req, "h$h$h$h$h$h");
+            return notionService.buildPayload(req);
         }, "There should be no errors building the payload.");
         Assert.notNull(result, result);
         Assert.isTrue(result.length() > 0, "The payload should not be empty.");
