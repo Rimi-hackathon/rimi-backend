@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class NotionService {
@@ -153,26 +155,17 @@ public class NotionService {
                         }
                 }
 
-                return getNextSentenceAfterOOO(gptResponse);
+                return getTextAfterPattern(gptResponse);
         }
 
-        public String getNextSentenceAfterOOO(String text) {
-                String str="OOO";
-                int index = text.indexOf(str);
+        public String getTextAfterPattern(String text) {
+                Pattern pattern = Pattern.compile("A[0-9]: (.*?)(?=(A[0-9]:|$))", Pattern.DOTALL);
+                Matcher matcher = pattern.matcher(text);
 
-                if (index != -1) {
-                        String[] sentences = text.split("\\.");
-
-                        for (int i = 0; i < sentences.length; i++) {
-                                if (sentences[i].contains("OOO")) {
-                                        if (i + 1 < sentences.length) {
-                                                return sentences[i + 1].trim();
-                                        }
-                                }
-                        }
-                }else{
-                        return text;
+                if (matcher.find()) {
+                        return matcher.group(1).trim();
                 }
+
                 return text;
         }
 
