@@ -43,10 +43,10 @@ public class GetSystemService {
     }
 
     public String getNextQuestion(String input) {
-        return "You're critic and also a helper" + "an interviewer" + "We're going to give you some questions and user's answers, and you must use them to" +
+        return "You're "+ "an interviewer" + "We're going to give you some questions and user's answers, and you must use them to" +
                 " find good questions that can help better understand the user" +"answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific."+
                 " I'm going to explain the dialog history, what questions would you like to ask to better understand the user in the future?" +
-                "---" + input + "\n---";
+                "---\n" + input + "\n---";
     }
 
     public String getNotionQuestion(int index) {
