@@ -1,13 +1,5 @@
 package com.rimi.backend.notion;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -18,6 +10,13 @@ import com.rimi.backend.domain.advice.domain.repository.QandARepository;
 import com.rimi.backend.global.gpt.service.CreateAssistantService;
 import com.rimi.backend.global.gpt.service.GetSystemService;
 import com.rimi.backend.global.request.CreateNotionRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.List;
 
 @Service
 public class NotionService {
@@ -116,15 +115,19 @@ public class NotionService {
         }
 
         private String queryGPT(int num, String email) {
-                String promptBase = systemService.getNotionQuestion(num);
+                String promptBase = "You're critic and also a helper" + "We're going to give you some questions and user's answers, and you must use them to" +
+                        "respond according to the context of the conversation" + "answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific." +
+                        "Based on your understanding of the situation so far, answer following questions."
+                        + systemService.getNotionQuestion(num);
+
                 List<QandA> qandAList = qandARepository.findAllByEmail(email);
                 String user = "";
                 String assistant = "";
 
                 for (QandA qandA : qandAList) {
                         user += "chatgpt " + ": " + qandA.getQuestion() +
-                                        "\nOOO: " + qandA.getAnswer()
-                                        + "\n";
+                                "\nOOO: " + qandA.getAnswer()
+                                + "\n";
                         // if (qandA.getAdvice() != null)
                         // assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion()
                         // + "\nadvice to the user: "
@@ -149,7 +152,28 @@ public class NotionService {
                                 continue;
                         }
                 }
-                return gptResponse;
+
+                return getNextSentenceAfterOOO(gptResponse);
+        }
+
+        public String getNextSentenceAfterOOO(String text) {
+                String str="OOO";
+                int index = text.indexOf(str);
+
+                if (index != -1) {
+                        String[] sentences = text.split("\\.");
+
+                        for (int i = 0; i < sentences.length; i++) {
+                                if (sentences[i].contains("OOO")) {
+                                        if (i + 1 < sentences.length) {
+                                                return sentences[i + 1].trim();
+                                        }
+                                }
+                        }
+                }else{
+                        return text;
+                }
+                return text;
         }
 
         public String buildPayload(CreateNotionRequest req) throws Exception {
@@ -159,7 +183,7 @@ public class NotionService {
 
                 String name = req.getName();
                 String introductoryText1 = "안녕하세요.";
-                String introductoryText2 = String.format("%s\n%s입니다.", queryGPT(1, req.getEmail()), name);
+                String introductoryText2 = queryGPT(1, req.getEmail());
                 String selfDescriptionText1 = queryGPT(3, req.getEmail());
                 String selfDescriptionText2 = "";
                 String selfDescriptionText3 = "";
