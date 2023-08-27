@@ -59,9 +59,7 @@ public class CreateAssistantService {
 
         messageList.put(buildMessage("system", system));
         messageList.put(buildMessage("user", user));
-        // if (assistant != null && !assistant.isEmpty()) {
-        messageList.put(buildMessage("assistant", "이제부터 너가 답변할 차례야."));
-        // }
+
         payload.put("temperature", 0);
         payload.put("model", "gpt-3.5-turbo-16k-0613");
         payload.put("messages", messageList);

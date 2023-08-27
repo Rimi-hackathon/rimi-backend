@@ -22,11 +22,11 @@ public class GetSystemService {
     public String getSystemContent(String type) {
         switch (type) {
             case "getAdvice":
-                return "You're critic and also a helper" +
-                        "We're going to give you some questions and user's answers, and you must use them to" +
-                        "answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific.";
+                return "You're critic and also a helper." +
+                        " We're going to give you some questions and user's answers, and you must use them to" +
+                        " answer in 400 ~ 450 characters." + " You must use korean to answer and also with honorific.";
             case "getNotionInput":
-                return "You're critic and also a helper" + "We're going to give you some questions and user's answers, and you must use them to" +
+                return "You're critic and also a helper." + " We're going to give you some questions and user's answers, and you must use them to" +
                         "respond according to the context of the conversation" +"answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific."+
                         "Based on your understanding of the situation so far, answer following questions.\n" +
                         "Separate the answers for each question with the $ symbol as a delimiter.\n" +
@@ -43,10 +43,10 @@ public class GetSystemService {
     }
 
     public String getNextQuestion(String input) {
-        return "You're "+ "an interviewer" + "We're going to give you some questions and user's answers, and you must use them to" +
-                " find good questions that can help better understand the user" +"answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific."+
+        return "You're "+ "an interviewer. " + "We're going to give you some questions and user's answers, and you must use them to" +
+                " find good questions that can help better understand the user." +" Answer in 400 ~ 450 characters." + " You must use korean to answer and also with honorific."+
                 " I'm going to explain the dialog history, what questions would you like to ask to better understand the user in the future?" +
-                "---\n" + input + "\n---";
+                " ---\n" + input + "\n--- ";
     }
 
     public String getNotionQuestion(int index) {

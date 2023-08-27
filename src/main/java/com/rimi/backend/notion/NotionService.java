@@ -117,9 +117,9 @@ public class NotionService {
         }
 
         private String queryGPT(int num, String email) {
-                String promptBase = "You're critic and also a helper" + "We're going to give you some questions and user's answers, and you must use them to" +
-                        "respond according to the context of the conversation" + "answer in 400 ~ 450 characters." + "You must use korean to answer and also with honorific." +
-                        "Based on your understanding of the situation so far, answer following questions."
+                String promptBase = "You're critic and also a helper. " + "We're going to give you some questions and user's answers, and you must use them to" +
+                        " respond according to the context of the conversation." + " Answer in 400 ~ 450 characters." + " You must use korean to answer and also with honorific." +
+                        " Based on your understanding of the situation so far, answer following questions."
                         + systemService.getNotionQuestion(num);
 
                 List<QandA> qandAList = qandARepository.findAllByEmail(email);
