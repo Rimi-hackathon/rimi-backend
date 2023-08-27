@@ -117,10 +117,14 @@ public class NotionService {
         }
 
         private String queryGPT(int num, String email) {
-                String promptBase = "You're critic and also a helper. " + "We're going to give you some questions and user's answers, and you must use them to" +
-                        " respond according to the context of the conversation." + " Answer in 400 ~ 450 characters." + " You must use korean to answer and also with honorific." +
-                        " Based on your understanding of the situation so far, answer following questions."
-                        + systemService.getNotionQuestion(num);
+                String promptBase = "You're critic and also a helper. "
+                                + "We're going to give you some questions and user's answers, and you must use them to"
+                                +
+                                " respond according to the context of the conversation."
+                                + " Answer in 400 ~ 450 characters."
+                                + " You must use korean to answer and also with honorific." +
+                                " Based on your understanding of the situation so far, answer following questions."
+                                + systemService.getNotionQuestion(num);
 
                 List<QandA> qandAList = qandARepository.findAllByEmail(email);
                 String user = "";
@@ -128,8 +132,8 @@ public class NotionService {
 
                 for (QandA qandA : qandAList) {
                         user += "chatgpt " + ": " + qandA.getQuestion() +
-                                "\nOOO: " + qandA.getAnswer()
-                                + "\n";
+                                        "\nOOO: " + qandA.getAnswer()
+                                        + "\n";
                         // if (qandA.getAdvice() != null)
                         // assistant += "question " + qandA.getQandAid() + ": " + qandA.getQuestion()
                         // + "\nadvice to the user: "
@@ -317,7 +321,7 @@ public class NotionService {
                 // 6. insert experience
                 {
                         // callout in 12th section - skip for now
-                        JsonObject experienceParagraph = templateSections.get(13).getAsJsonObject().get("paragraph")
+                        JsonObject experienceParagraph = templateSections.get(12).getAsJsonObject().get("callout")
                                         .getAsJsonObject();
 
                         String richExperienceText = buildRichText(experiences);
